@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model album {
+  id             Int      @id @default(autoincrement())
+  name           String
+  coverUrl       String
+  lastUpdateTime DateTime @default(now())
+  userOpenid     String
+  user           user     @relation(fields: [userOpenid], references: [openid])
+  assets         asset[]
+
+  @@index([userOpenid], map: "album_userOpenid_fkey")
+}
+
+model asset {
+  id             Int       @id @default(autoincrement())
+  url            String
+  type           assetType @default(unknown)
+  sort           Int
+  size           Int
+  lastUpdateTime DateTime  @default(now())
+  albumId        Int
+  plogId         Int
+  userOpenid     String
+  album          album     @relation(fields: [albumId], references: [id])
+  plog           plog      @relation(fields: [plogId], references: [id])
+  user           user      @relation(fields: [userOpenid], references: [openid])
+
+  @@index([albumId], map: "asset_albumId_fkey")
+  @@index([plogId], map: "asset_plogId_fkey")
+  @@index([userOpenid], map: "asset_userOpenid_fkey")
+}
+
+model plog {
+  id             Int      @id @default(autoincrement())
+  content        String
+  address        String
+  lastUpdateTime DateTime @default(now())
+  userOpenid     String
+  assets         asset[]
+  user           user     @relation(fields: [userOpenid], references: [openid])
+
+  @@index([userOpenid], map: "plog_userOpenid_fkey")
+}
+
+model user {
+  openid         String          @id
+  nickName       String
+  avatar         String
+  gender         userGender      @default(unknown)
+  signature      String
+  birthday       DateTime
+  bindUser       String
+  lastUpdateTime DateTime        @default(now())
+  albums         album[]
+  assets         asset[]
+  lifeinventory  lifeinventory[]
+  memorialday    memorialday[]
+  plogs          plog[]
+}
+
+model lifeinventory {
+  id             Int                  @id @default(autoincrement())
+  name           String
+  status         lifeinventory_status @default(unFinish)
+  fontSize       Int
+  color          String
+  lastUpdateTime DateTime             @default(now())
+  userOpenid     String
+  user           user                 @relation(fields: [userOpenid], references: [openid], map: "lifeInventory_userOpenid_fkey")
+
+  @@index([userOpenid], map: "lifeInventory_userOpenid_fkey")
+}
+
+model memorialday {
+  id             Int              @id @default(autoincrement())
+  name           String
+  date           DateTime
+  type           memorialday_type
+  lastUpdateTime DateTime         @default(now())
+  userOpenid     String
+  user           user             @relation(fields: [userOpenid], references: [openid], map: "memorialDay_userOpenid_fkey")
+
+  @@index([userOpenid], map: "memorialDay_userOpenid_fkey")
+}
+
+enum assetType {
+  unknown
+  image
+  video
+  audio
+}
+
+enum userGender {
+  unknown
+  female
+  male
+}
+
+enum lifeinventory_status {
+  unFinish
+  finish
+}
+
+enum memorialday_type {
+  countdown
+  cumulative
+}
