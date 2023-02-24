@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { MemorialDayTypeEnum } from '../dto/memorialDay.dto';
+import { DateTypeEnum, MemorialDayTypeEnum } from '../dto/memorialDay.dto';
 
 export class MemorialDayEntity {
   /**
@@ -11,9 +11,17 @@ export class MemorialDayEntity {
    */
   name: string;
   /**
+   * 图标
+   */
+  icon: string;
+  /**
    * 时间
    */
   date: number;
+  /**
+   * 日期类型
+   */
+  dateType: DateTypeEnum;
   /**
    * 日期计算类型
    */

@@ -82,8 +82,10 @@ model lifeinventory {
 model memorialday {
   id             Int              @id @default(autoincrement())
   name           String
+  icon           String
   date           DateTime
   type           memorialday_type
+  dateType       date_type
   lastUpdateTime DateTime         @default(now())
   userOpenid     String
   user           user             @relation(fields: [userOpenid], references: [openid], map: "memorialDay_userOpenid_fkey")
@@ -112,4 +114,9 @@ enum lifeinventory_status {
 enum memorialday_type {
   countdown
   cumulative
+}
+
+enum date_type {
+  solar
+  lunar
 }

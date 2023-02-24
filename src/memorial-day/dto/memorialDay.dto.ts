@@ -6,11 +6,29 @@ export enum MemorialDayTypeEnum {
   cumulative = 'cumulative',
 }
 
+export enum DateTypeEnum {
+  /** 公历 */
+  solar = 'solar',
+  /** 农历 */
+  lunar = 'lunar',
+}
 export class CreateMemorialDayDto {
   /**
    * 名称
    */
+  @IsNotEmpty({ message: '名称不能为空' })
   name: string;
+  /**
+   * 图表名称
+   */
+  @IsNotEmpty({ message: 'icon不能为空' })
+  icon: string;
+  /**
+   * 日期类型
+   */
+  @ApiProperty({ enum: DateTypeEnum, enumName: 'DateTypeEnum' })
+  @IsNotEmpty({ message: '日期类型' })
+  dateType: DateTypeEnum;
   /**
    * 日期
    */
