@@ -1,14 +1,9 @@
-enum EnumAssetType {
-  unknown,
-  image,
-  video,
-  audio,
-}
+import { AssetTypeEnum } from '../dto/asset.dto';
 
 export class AssetEntity {
-  id: string;
+  id: number;
   url: string;
-  type: EnumAssetType;
+  type: AssetTypeEnum;
   sort: number;
   size: number;
   albumId: number;

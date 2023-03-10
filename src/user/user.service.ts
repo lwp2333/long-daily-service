@@ -83,7 +83,7 @@ export class UserService {
       },
       data: {
         ...data,
-        birthday: new Date(data.birthday),
+        birthday: data.birthday ? new Date(data.birthday) : undefined,
       },
     });
   }

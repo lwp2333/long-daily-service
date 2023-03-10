@@ -8,3 +8,8 @@ export class PlogEntity {
   userOpenid: string;
   assets: AssetEntity[];
 }
+
+export class PlogByPageEntity {
+  total: number;
+  list: PlogEntity[];
+}

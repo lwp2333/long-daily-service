@@ -1,3 +1,4 @@
+import { AssetEntity } from '@/asset/entities/asset.entity';
 export class Album {
   /**
    * id
@@ -7,6 +8,10 @@ export class Album {
    * 相册名
    */
   name: string;
+  /**
+   * 描述
+   */
+  desc: string;
   /**
    * 封面图
    */
@@ -19,4 +24,8 @@ export class Album {
    * 最新更新时间
    */
   lastUpdateTime: Date;
+}
+
+export class AlbumDetail extends Album {
+  assets: AssetEntity[];
 }

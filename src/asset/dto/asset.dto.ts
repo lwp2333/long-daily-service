@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsUrl } from 'class-validator';
 
-enum AssetTypeEnum {
+export enum AssetTypeEnum {
   unknown = 'unknown',
   image = 'image',
   video = 'video',

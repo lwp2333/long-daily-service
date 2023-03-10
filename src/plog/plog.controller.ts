@@ -1,8 +1,8 @@
 import { Openid } from '@/decorator/openid.decorator';
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePlogDto, GetListByPageDto, UpdatePlogDto } from './dto/plog.dto';
-import { PlogEntity } from './entities/plog.entity';
+import { PlogByPageEntity, PlogEntity } from './entities/plog.entity';
 import { PlogService } from './plog.service';
 
 @ApiTags('plog')
@@ -14,7 +14,7 @@ export class PlogController {
    * 创建动态
    */
   @Post('/create')
-  @ApiOkResponse({ status: 200, type: PlogEntity })
+  @ApiOkResponse({ status: 200, type: Number })
   create(@Openid() openid: string, @Body() body: CreatePlogDto) {
     return this.plogService.create(openid, body);
   }
@@ -22,7 +22,7 @@ export class PlogController {
    * 分页获取动态列表
    */
   @Get('/getListByPage')
-  @ApiOkResponse({ status: 200, type: [PlogEntity] })
+  @ApiOkResponse({ status: 200, type: PlogByPageEntity })
   findByPage(@Openid() openid: string, @Query() query: GetListByPageDto) {
     return this.plogService.findByPage(openid, query);
   }
@@ -38,7 +38,7 @@ export class PlogController {
    * 更新动态
    */
   @Post(':id')
-  @ApiOkResponse({ status: 200, type: PlogEntity })
+  @ApiOkResponse({ status: 200, type: Boolean })
   update(@Openid() openid: string, @Param('id') id: string, @Body() updatePlogDto: UpdatePlogDto) {
     return this.plogService.update(openid, +id, updatePlogDto);
   }

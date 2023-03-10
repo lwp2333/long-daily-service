@@ -8,6 +8,11 @@ export class CreateAlbumDto {
   @IsNotEmpty({ message: '相册名称不能为空' })
   name: string;
   /**
+   * 描述
+   */
+  @IsNotEmpty({ message: '相册名称不能为空' })
+  desc: string;
+  /**
    * 封面图
    */
   @IsNotEmpty({ message: '封面图不能为空' })

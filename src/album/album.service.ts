@@ -1,8 +1,7 @@
 import { PrismaService } from '@/services/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CreateAlbumDto, UpdateAlbumDto } from './dto/album.dto';
-import { Album } from './entities/album.entity';
-
+import { Album, AlbumDetail } from './entities/album.entity';
 @Injectable()
 export class AlbumService {
   constructor(private readonly prisma: PrismaService) {}
@@ -40,12 +39,17 @@ export class AlbumService {
       };
     });
   }
-  async findOne(id: number): Promise<Album> {
+  async findOne(id: number): Promise<AlbumDetail> {
     const res = await this.prisma.album.findUnique({
       where: {
         id,
       },
       include: {
+        assets: {
+          orderBy: {
+            lastUpdateTime: 'asc',
+          },
+        },
         _count: {
           select: {
             assets: true,
@@ -53,11 +57,12 @@ export class AlbumService {
         },
       },
     });
+
     const { _count, ...other } = res;
     return {
       ...other,
       assetCount: _count.assets,
-    };
+    } as unknown as AlbumDetail;
   }
   async update(id: number, data: UpdateAlbumDto) {
     return await this.prisma.album.update({

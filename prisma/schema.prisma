@@ -10,6 +10,7 @@ datasource db {
 model album {
   id             Int      @id @default(autoincrement())
   name           String
+  desc           String
   coverUrl       String
   lastUpdateTime DateTime @default(now())
   userOpenid     String

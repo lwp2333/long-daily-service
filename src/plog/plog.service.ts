@@ -2,34 +2,47 @@ import { PrismaService } from '@/services/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CreatePlogDto, GetListByPageDto } from './dto/plog.dto';
 import { UpdatePlogDto } from './dto/plog.dto';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class PlogService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(userOpenid: string, body: CreatePlogDto) {
-    return await this.prisma.plog.create({
+    const res = await this.prisma.plog.create({
       data: {
         userOpenid,
         ...body,
       },
     });
+    return res.id;
   }
 
   async findByPage(userOpenid: string, query: GetListByPageDto) {
     const { pageIndex, pageSize: take, ...other } = query;
     const skip = take * (pageIndex - 1);
-    return await this.prisma.plog.findMany({
+    const res = await this.prisma.plog.findMany({
       where: {
         userOpenid,
         ...other,
       },
       include: {
-        assets: true,
+        assets: {
+          orderBy: {
+            sort: 'asc',
+          },
+        },
       },
       skip,
       take,
     });
+    return {
+      total: 0,
+      list: res.map(it => ({
+        ...it,
+        lastUpdateTime: dayjs(it.lastUpdateTime).format('YYYY-MM-DD HH:mm:ss'),
+      })),
+    };
   }
 
   async findOne(userOpenid: string, id: number) {
@@ -42,12 +55,17 @@ export class PlogService {
   }
 
   async update(userOpenid: string, id: number, data: UpdatePlogDto) {
-    return await this.prisma.plog.update({
-      where: {
-        id,
-      },
-      data,
-    });
+    try {
+      await this.prisma.plog.update({
+        where: {
+          id,
+        },
+        data,
+      });
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   async delete(userOpenid: string, id: number) {
