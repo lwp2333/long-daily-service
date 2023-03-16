@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '@/services/prisma.service';
-import { LoginEntity } from './entities/user.entity';
 import axios from 'axios';
 import { UpdateUserDto } from './dto/user.dto';
 
@@ -23,14 +22,12 @@ export class UserService {
   private secret = this.config.get('WX_secret');
   private grant_type = 'authorization_code';
 
-  async loginByCode(code: string): Promise<LoginEntity> {
+  async loginByCode(code: string) {
     const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${this.appid}&secret=${this.secret}&js_code=${code}&grant_type=${this.grant_type}`;
-
     const { openid } = await axios.get<WxLoginRes>(url).then(res => res.data);
     if (!openid) {
       throw new HttpException('code 失效', HttpStatus.FAILED_DEPENDENCY);
     }
-
     try {
       const token = this.jwt.sign({ openid });
       const oldUser = await this.prisma.user.findUnique({

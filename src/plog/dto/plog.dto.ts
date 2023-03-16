@@ -1,6 +1,8 @@
+import { CreateAssetDto } from '@/asset/dto/asset.dto';
 import { ByPageDto } from '@/common/common.dto';
-import { PartialType } from '@nestjs/swagger';
+import { OmitType, PartialType } from '@nestjs/swagger';
 
+export class CreateAssetsInPlog extends OmitType(CreateAssetDto, ['plogId']) {}
 export class CreatePlogDto {
   /**
    * 内容
@@ -10,6 +12,10 @@ export class CreatePlogDto {
    * 位置
    */
   address: string;
+  /**
+   * 资源
+   */
+  assets: CreateAssetsInPlog[];
 }
 export class UpdatePlogDto extends PartialType(CreatePlogDto) {}
 

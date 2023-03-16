@@ -1,9 +1,9 @@
 import { Openid } from '@/decorator/openid.decorator';
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AlbumService } from './album.service';
 import { CreateAlbumDto, UpdateAlbumDto } from './dto/album.dto';
-import { Album } from './entities/album.entity';
+import { AlbumEntity, AlbumDetailEntity } from './entities/album.entity';
 
 @ApiTags('album')
 @Controller('album')
@@ -14,7 +14,7 @@ export class AlbumController {
    * 创建相册
    */
   @Post('/create')
-  @ApiOkResponse({ status: 200, type: Album })
+  @ApiOkResponse({ status: 200, type: AlbumEntity })
   async create(@Openid() openid: string, @Body() body: CreateAlbumDto) {
     return await this.albumService.create(openid, body);
   }
@@ -22,7 +22,7 @@ export class AlbumController {
    * 相册列表
    */
   @Get('/list')
-  @ApiOkResponse({ status: 200, type: [Album] })
+  @ApiOkResponse({ status: 200, type: [AlbumEntity] })
   async findAll(@Openid() openid: string) {
     return await this.albumService.findAll(openid);
   }
@@ -30,7 +30,7 @@ export class AlbumController {
    * 相册详情
    */
   @Get(':id')
-  @ApiOkResponse({ status: 200, type: Album })
+  @ApiOkResponse({ status: 200, type: AlbumDetailEntity })
   async findOne(@Param('id') id: string) {
     return await this.albumService.findOne(+id);
   }
@@ -38,7 +38,7 @@ export class AlbumController {
    * 修改相册信息
    */
   @Post(':id')
-  @ApiOkResponse({ status: 200, type: Album })
+  @ApiOkResponse({ status: 200, type: AlbumEntity })
   async update(@Param('id') id: string, @Body() body: UpdateAlbumDto) {
     return await this.albumService.update(+id, body);
   }

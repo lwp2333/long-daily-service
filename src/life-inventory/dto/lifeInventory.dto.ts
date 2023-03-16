@@ -1,9 +1,16 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsHexColor, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export enum lifeInventoryStatusEnum {
   unFinish = 'unFinish',
   finish = 'finish',
+}
+
+export enum fontSizeEnum {
+  small = 'small',
+  default = 'default',
+  middle = 'middle',
+  large = 'large',
 }
 
 export class CreateLifeInventoryDto {
@@ -21,13 +28,12 @@ export class CreateLifeInventoryDto {
    * 显示字体大小
    */
   @IsNotEmpty({ message: '字体大小不能为空' })
-  @IsNumber()
-  fontSize: number;
+  @ApiProperty({ enum: fontSizeEnum, enumName: 'fontSizeEnum' })
+  fontSize: fontSizeEnum;
   /**
    * 显示字体颜色
    */
   @IsNotEmpty({ message: '字体颜色不能为空' })
-  @IsHexColor({ message: '字体颜色必须为hex' })
   color: string;
 }
 

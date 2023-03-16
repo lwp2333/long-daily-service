@@ -1,5 +1,5 @@
 import { AssetEntity } from '@/asset/entities/asset.entity';
-export class Album {
+export class AlbumEntity {
   /**
    * id
    */
@@ -26,6 +26,22 @@ export class Album {
   lastUpdateTime: Date;
 }
 
-export class AlbumDetail extends Album {
-  assets: AssetEntity[];
+export class AlbumDetailEntity extends AlbumEntity {
+  /**
+   * 照片数量
+   */
+  imagesCount: number;
+  /**
+   * 视频数量
+   */
+  videosCount: number;
+  /**
+   * 时间分组列表
+   */
+  groupList: GroupList[];
+}
+
+export class GroupList {
+  date: string;
+  list: AssetEntity[];
 }

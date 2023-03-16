@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { lifeInventoryStatusEnum } from '../dto/lifeInventory.dto';
+import { fontSizeEnum, lifeInventoryStatusEnum } from '../dto/lifeInventory.dto';
 
 export class LifeInventoryEntity {
   /**
@@ -18,7 +18,8 @@ export class LifeInventoryEntity {
   /**
    * 显示字体大小
    */
-  fontSize: number;
+  @ApiProperty({ enum: fontSizeEnum, enumName: 'fontSizeEnum' })
+  fontSize: fontSizeEnum;
   /**
    * 显示字体颜色
    */

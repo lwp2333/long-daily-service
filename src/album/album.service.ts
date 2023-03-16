@@ -1,7 +1,13 @@
 import { PrismaService } from '@/services/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CreateAlbumDto, UpdateAlbumDto } from './dto/album.dto';
-import { Album, AlbumDetail } from './entities/album.entity';
+import { AlbumEntity, AlbumDetailEntity } from './entities/album.entity';
+import dayjs from 'dayjs';
+import { AssetEntity } from '@/asset/entities/asset.entity';
+
+interface DateMap {
+  [k: string]: AssetEntity[];
+}
 @Injectable()
 export class AlbumService {
   constructor(private readonly prisma: PrismaService) {}
@@ -15,7 +21,7 @@ export class AlbumService {
     });
     return res.id;
   }
-  async findAll(userOpenid: string): Promise<Album[]> {
+  async findAll(userOpenid: string): Promise<AlbumEntity[]> {
     const res = await this.prisma.album.findMany({
       where: {
         userOpenid,
@@ -39,17 +45,12 @@ export class AlbumService {
       };
     });
   }
-  async findOne(id: number): Promise<AlbumDetail> {
+  async findOne(id: number): Promise<AlbumDetailEntity> {
     const res = await this.prisma.album.findUnique({
       where: {
         id,
       },
       include: {
-        assets: {
-          orderBy: {
-            lastUpdateTime: 'asc',
-          },
-        },
         _count: {
           select: {
             assets: true,
@@ -57,12 +58,41 @@ export class AlbumService {
         },
       },
     });
+    const imagesCount = await this.prisma.asset.count({ where: { albumId: id, type: 'image' } });
+    const videosCount = await this.prisma.asset.count({ where: { albumId: id, type: 'video' } });
+    // 按时间分组
+    const allAssets = await this.prisma.asset.findMany({
+      where: {
+        albumId: id,
+      },
+      orderBy: {
+        lastUpdateTime: 'asc',
+      },
+    });
+    const dateMap: DateMap = allAssets
+      .map(it => ({ ...it, date: dayjs(it.lastUpdateTime).format('YYYY-MM-DD') }))
+      .reduce((pre, cur) => {
+        if (!pre[cur.date]) {
+          pre[cur.date] = [];
+        }
+        pre[cur.date].push(cur);
+        return pre;
+      }, {});
+    const groupList = Object.keys(dateMap).map(date => {
+      return {
+        date,
+        list: dateMap[date],
+      };
+    });
 
     const { _count, ...other } = res;
     return {
       ...other,
       assetCount: _count.assets,
-    } as unknown as AlbumDetail;
+      imagesCount,
+      videosCount,
+      groupList,
+    };
   }
   async update(id: number, data: UpdateAlbumDto) {
     return await this.prisma.album.update({

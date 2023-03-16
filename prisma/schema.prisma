@@ -71,7 +71,7 @@ model lifeinventory {
   id             Int                  @id @default(autoincrement())
   name           String
   status         lifeinventory_status @default(unFinish)
-  fontSize       Int
+  fontSize       font_size            @default(default)
   color          String
   lastUpdateTime DateTime             @default(now())
   userOpenid     String
@@ -120,4 +120,11 @@ enum memorialday_type {
 enum date_type {
   solar
   lunar
+}
+
+enum font_size {
+  small
+  default
+  middle
+  large
 }

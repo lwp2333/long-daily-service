@@ -28,7 +28,7 @@ export class UserEntity {
    */
   signature: string;
 }
-export class LoginEntity {
+export class LoginEntity extends UserEntity {
   /**
    * token
    */
