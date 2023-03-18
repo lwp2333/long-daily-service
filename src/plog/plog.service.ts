@@ -27,10 +27,18 @@ export class PlogService {
   async findByPage(userOpenid: string, body: GetListByPageDto) {
     const { pageIndex, pageSize: take, ...other } = body;
     const skip = take * (pageIndex - 1);
+    const total = await this.prisma.plog.count({
+      where: {
+        userOpenid,
+      },
+    });
     const res = await this.prisma.plog.findMany({
       where: {
         userOpenid,
         ...other,
+      },
+      orderBy: {
+        lastUpdateTime: 'desc',
       },
       include: {
         assets: {
@@ -43,7 +51,7 @@ export class PlogService {
       take,
     });
     return {
-      total: 0,
+      total,
       list: res.map(it => ({
         ...it,
         lastUpdateTime: dayjs(it.lastUpdateTime).format('YYYY-MM-DD HH:mm:ss'),

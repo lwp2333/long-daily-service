@@ -31,6 +31,14 @@ export class UserEntity {
    * banner图列表
    */
   bannerList: string[];
+  /**
+   * 注册时间
+   */
+  registerTime: string;
+  /**
+   * 最后更新时间
+   */
+  lastUpdateTime: string;
 }
 export class LoginEntity extends UserEntity {
   /**
