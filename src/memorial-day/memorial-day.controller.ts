@@ -1,5 +1,5 @@
 import { Openid } from '@/decorator/openid.decorator';
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CreateMemorialDayDto, UpdateMemorialDayDto } from './dto/memorialDay.dto';
 import { MemorialDayEntity } from './entities/memorialDay.entity';

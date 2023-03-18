@@ -1,5 +1,5 @@
 import { Openid } from '@/decorator/openid.decorator';
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CreateLifeInventoryDto, UpdateLifeInventoryDto } from './dto/lifeInventory.dto';
 import { LifeInventoryEntity } from './entities/lifeInventory.entity';

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsDateString, IsEnum } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsDateString, IsEnum, IsUrl } from 'class-validator';
 
 export enum GenderEnum {
   unknown = 'unknown',
@@ -44,4 +44,10 @@ export class UpdateUserDto {
    */
   @IsOptional()
   signature?: string;
+  /**
+   * banner图片url数组
+   */
+  @IsOptional()
+  @IsUrl({}, { message: 'url不合法', each: true })
+  bannerList?: string[];
 }

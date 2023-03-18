@@ -34,9 +34,6 @@ export class PlogController {
   findOne(@Openid() openid: string, @Param('id') id: string) {
     return this.plogService.findOne(openid, +id);
   }
-  /**
-   * 更新动态
-   */
   // @Post(':id')
   // @ApiOkResponse({ status: 200, type: Boolean })
   // update(@Openid() openid: string, @Param('id') id: string, @Body() updatePlogDto: UpdatePlogDto) {

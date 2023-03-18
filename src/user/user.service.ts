@@ -1,7 +1,7 @@
+import { PrismaService } from '@/services/prisma.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from '@/services/prisma.service';
 import axios from 'axios';
 import { UpdateUserDto } from './dto/user.dto';
 
@@ -15,7 +15,7 @@ export class UserService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
-    private config: ConfigService
+    private readonly config: ConfigService
   ) {}
 
   private appid = this.config.get('WX_appid');
@@ -37,6 +37,7 @@ export class UserService {
       });
       if (!oldUser) {
         const newUser = await this.createNewUser(openid);
+        await this.createDeafultData(openid);
         return {
           token,
           ...newUser,
@@ -56,13 +57,41 @@ export class UserService {
     return await this.prisma.user.create({
       data: {
         openid,
-        nickName: '新用户',
-        avatar: '',
+        nickName: '刺客排名10086',
+        avatar: 'https://cdn200.oss-cn-hangzhou.aliyuncs.com/long-daily/default_avatar.png',
         bindUser: '',
         birthday: new Date(),
-        signature: '',
+        signature: '这个人很懒啥也没留下...',
+        bannerList: [],
       },
     });
+  }
+
+  async createDeafultData(userOpenid: string) {
+    try {
+      // 插入默认相册
+      await this.prisma.album.create({
+        data: {
+          id: -1,
+          userOpenid,
+          name: '默认相册',
+          desc: '注册系统时默认建立的首个相册',
+          coverUrl: 'https://cdn200.oss-cn-hangzhou.aliyuncs.com/long-daily/default_album_cover.jpg',
+        },
+      });
+      // 插入存储录音的相册
+      await this.prisma.album.create({
+        data: {
+          id: -2,
+          userOpenid,
+          name: '默认相册',
+          desc: '注册系统时默认建立的首个相册',
+          coverUrl: 'https://cdn200.oss-cn-hangzhou.aliyuncs.com/long-daily/default_album_cover.jpg',
+        },
+      });
+    } catch (error) {
+      console.log('error', error);
+    }
   }
 
   async getUserInfo(openid: string) {

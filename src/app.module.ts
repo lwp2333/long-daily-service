@@ -5,12 +5,12 @@ import { AlbumModule } from './album/album.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AssetModule } from './asset/asset.module';
-import { OssModule } from './oss/oss.module';
-import { PrismaService } from './services/prisma.service';
-import { UserModule } from './user/user.module';
-import { PlogModule } from './plog/plog.module';
 import { LifeInventoryModule } from './life-inventory/life-inventory.module';
 import { MemorialDayModule } from './memorial-day/memorial-day.module';
+import { OssModule } from './oss/oss.module';
+import { PlogModule } from './plog/plog.module';
+import { PrismaService } from './services/prisma.service';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [

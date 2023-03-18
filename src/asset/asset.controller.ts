@@ -14,8 +14,8 @@ export class AssetController {
    */
   @Post()
   @ApiOkResponse({ status: 200, type: AssetEntity })
-  create(@Openid() openid: string, @Body() createAssetDto: CreateAssetDto) {
-    return this.assetService.create(createAssetDto, openid);
+  create(@Openid() openid: string, @Body() body: CreateAssetDto) {
+    return this.assetService.create(openid, body);
   }
   /**
    * 删除资源

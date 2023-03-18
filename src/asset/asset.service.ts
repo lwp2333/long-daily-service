@@ -5,11 +5,11 @@ import { CreateAssetDto } from './dto/asset.dto';
 @Injectable()
 export class AssetService {
   constructor(private readonly prisma: PrismaService) {}
-  create(info: CreateAssetDto, userOpenid: string) {
+  create(userOpenid: string, body: CreateAssetDto) {
     return this.prisma.asset.create({
       data: {
-        ...info,
         userOpenid,
+        ...body,
       },
     });
   }

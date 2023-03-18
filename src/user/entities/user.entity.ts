@@ -27,6 +27,10 @@ export class UserEntity {
    * 签名
    */
   signature: string;
+  /**
+   * banner图列表
+   */
+  bannerList: string[];
 }
 export class LoginEntity extends UserEntity {
   /**

@@ -7,7 +7,7 @@ export const Openid = createParamDecorator((data: unknown, ctx: ExecutionContext
     const token = req.headers['token'] as string;
     const jwt = new JwtService({
       secret: 'lwp2333', // 密钥
-      signOptions: { expiresIn: '8h' }, // 过期时间
+      signOptions: { expiresIn: '12h' }, // 过期时间
     });
     const data = jwt.decode(token) as { openid: string };
     return data.openid;

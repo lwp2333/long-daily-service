@@ -7,7 +7,7 @@ import { UserService } from './user.service';
   imports: [
     JwtModule.register({
       secret: 'lwp2333', // 密钥
-      signOptions: { expiresIn: '8h' }, // 过期时间
+      signOptions: { expiresIn: '12h' }, // 过期时间
     }),
   ],
   controllers: [UserController],

@@ -1,4 +1,3 @@
-import { EnvConfig } from '@/typings/envConfig.type';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import crypto from 'crypto-js';

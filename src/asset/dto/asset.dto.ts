@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsUrl } from 'class-validator';
 
 export enum AssetTypeEnum {
   unknown = 'unknown',
@@ -14,6 +14,12 @@ export class CreateAssetDto {
    */
   @IsUrl({}, { message: 'url不合法' })
   url: string;
+  /**
+   * 封面图
+   */
+  @IsOptional()
+  @IsUrl({}, { message: 'url不合法' })
+  poster?: string;
   /**
    * 资源类型
    */
@@ -40,6 +46,7 @@ export class CreateAssetDto {
   /**
    * 动态id
    */
+  @IsOptional()
   @IsNotEmpty({ message: '归属动态id不能为空' })
-  plogId: number;
+  plogId?: number;
 }

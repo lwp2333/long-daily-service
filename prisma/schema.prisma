@@ -10,7 +10,7 @@ datasource db {
 model album {
   id             Int      @id @default(autoincrement())
   name           String
-  desc           String
+  desc           String?
   coverUrl       String
   lastUpdateTime DateTime @default(now())
   userOpenid     String
@@ -24,14 +24,15 @@ model asset {
   id             Int       @id @default(autoincrement())
   url            String
   type           assetType @default(unknown)
-  sort           Int
-  size           Int
+  sort           Int?
+  size           Int?
+  poster         String?
   lastUpdateTime DateTime  @default(now())
-  albumId        Int
-  plogId         Int
   userOpenid     String
+  albumId        Int
+  plogId         Int?
   album          album     @relation(fields: [albumId], references: [id])
-  plog           plog      @relation(fields: [plogId], references: [id])
+  plog           plog?     @relation(fields: [plogId], references: [id])
   user           user      @relation(fields: [userOpenid], references: [openid])
 
   @@index([albumId], map: "asset_albumId_fkey")
@@ -41,8 +42,8 @@ model asset {
 
 model plog {
   id             Int      @id @default(autoincrement())
-  content        String
-  address        String
+  content        String?
+  address        String?
   lastUpdateTime DateTime @default(now())
   userOpenid     String
   assets         asset[]
@@ -58,7 +59,9 @@ model user {
   gender         userGender      @default(unknown)
   signature      String
   birthday       DateTime
-  bindUser       String
+  bindUser       String?
+  bannerList     Json
+  registerTime   DateTime        @default(now())
   lastUpdateTime DateTime        @default(now())
   albums         album[]
   assets         asset[]
