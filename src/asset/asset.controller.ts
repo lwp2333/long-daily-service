@@ -1,9 +1,9 @@
 import { Openid } from '@/decorator/openid.decorator';
-import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AssetService } from './asset.service';
 import { CreateAssetDto } from './dto/asset.dto';
-import { AssetEntity } from './entities/asset.entity';
+import { AssetEntity, AssetTypeCountEntity } from './entities/asset.entity';
 
 @ApiTags('asset')
 @Controller('asset')
@@ -24,5 +24,13 @@ export class AssetController {
   @ApiOkResponse({ status: 200, type: Boolean })
   delete(@Param('id') id: string) {
     return this.assetService.delete(+id);
+  }
+  /**
+   * 获取资源分布信息
+   */
+  @Get('/getTypeCount')
+  @ApiOkResponse({ status: 200, type: AssetTypeCountEntity })
+  getTypeCount(@Openid() openid: string) {
+    return this.assetService.getTypeCount(openid);
   }
 }

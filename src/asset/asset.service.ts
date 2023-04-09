@@ -27,4 +27,31 @@ export class AssetService {
       return false;
     }
   }
+
+  async getTypeCount(userOpenid: string) {
+    const imageCount = await this.prisma.asset.count({
+      where: {
+        userOpenid,
+        type: 'image',
+      },
+    });
+    const videoCount = await this.prisma.asset.count({
+      where: {
+        userOpenid,
+        type: 'video',
+      },
+    });
+    const audioCount = await this.prisma.asset.count({
+      where: {
+        userOpenid,
+        type: 'audio',
+      },
+    });
+
+    return {
+      imageCount,
+      videoCount,
+      audioCount,
+    };
+  }
 }

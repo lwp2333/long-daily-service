@@ -12,3 +12,9 @@ export class AssetEntity {
   userOpenid: string;
   lastUpdateTime: string;
 }
+
+export class AssetTypeCountEntity {
+  imageCount: number;
+  videoCount: number;
+  audioCount: number;
+}
